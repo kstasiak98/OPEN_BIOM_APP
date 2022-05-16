@@ -1,0 +1,20 @@
+{%  extends 'accounts/main.html' %}
+
+{% block content %}
+<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Image</th>
+				</tr>
+                {% for image in image_list %}
+                    <tr>
+                        <th>{{ image }} </th>
+                        <th><img src="{{ image.image_field.url }}" width=" 200px" height="120px"></th>
+                    </tr>
+                {% endfor %}
+			</table>
+
+		</div>
+{% endblock %}
