@@ -4,9 +4,22 @@
 
 <br>
 
-<div class="row">
+<div class="row text-center">
     <div class="col-12"><h1>USER DASHBOARD</h1></div>
-
+    <div class="col-12">
+        <form method = "POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    {% if img_obj %}
+        <div class="col-12">
+{#            {{ img_obj }}#}
+            <h3>Succesfully uploaded !!!</h3>
+{#            <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">#}
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

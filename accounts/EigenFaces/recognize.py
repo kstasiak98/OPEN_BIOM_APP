@@ -1,7 +1,7 @@
 import os
 import cv2
 import numpy as np
-from image_encrypt import encrypt, decrypt
+from accounts.EigenFaces.image_encrypt import encrypt, decrypt
 
 PASSWORD = 'Test'
 
@@ -49,5 +49,9 @@ def predict_user(user_id, img):
     return predictions
 
 if __name__ == '__main__':
-    test_img = cv2.imread("test1.jpg")
-    print(predict_user(1, test_img))
+    # test_img = cv2.imread("test1.jpg")
+    # print(predict_user(1, test_img))
+    test_img2 = cv2.imread("test3.jpg")
+    print(predict_user(1, test_img2))
+    # test_img3 = cv2.imread("test3.jpg")
+    # print(predict_user(1, test_img3))

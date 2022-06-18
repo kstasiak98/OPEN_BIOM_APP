@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustomerImageForm, CreateUserForm
+from .forms import CustomerImageForm, CreateUserForm, UserTestImageForm, ImageForm
 from .models import *
 
 # Create your views here.
@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
 from .decorators import unauthenticated_user, allowed_user, admin_only
+
+from accounts.EigenFaces.recognize import predict_user
+import cv2
 
 #picture_admins
 
@@ -90,7 +93,20 @@ def logoutUser(request):
 
 def userPage(request):
     context = {}
-    return render(request, 'accounts/user.html', context)
+
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            name = "TEST"
+            img_obj = form.cleaned_data.get("image")
+            print("Poszło")
+            print(img_obj)
+            test_img = cv2.imread("/uploads/test/test3.jpg")
+            print(predict_user(1, test_img))
+            return render(request, 'accounts/user.html', {'form': form, 'img_obj': img_obj})
+    else:
+        form = ImageForm()
+    return render(request, 'accounts/user.html', {'form': form})
 
 
 

@@ -15,3 +15,21 @@ class CustomerImage(models.Model):
 
     def __str__(self):
         return self.image_name
+
+
+class TestImage(models.Model):
+    image_name = models.CharField(max_length=200, default="test")
+    image_field = models.ImageField(upload_to='uploads/')
+
+    def __str__(self):
+        return self.image_name
+
+
+class Image_Test(models.Model):
+    image = models.ImageField(upload_to='test/')
+
+    def __str__(self):
+        return "TEST"
+
+
+
