@@ -38,7 +38,6 @@ def home(request):
                 image_field=img
             )
             obj.save()
-            print(obj)
     else:
         form = CustomerImageForm()
     context['form'] = form

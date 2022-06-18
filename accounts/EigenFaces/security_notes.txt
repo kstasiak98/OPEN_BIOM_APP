@@ -1,0 +1,47 @@
+During the next exercise class I would like to talk with each Team about the security analysis of the project that is implemented by the Team.
+Please consider the following questions:
+
+
+
+What are the assets in my projects?
+
+Primary assets:
+confidentialy and integrity of username, photos
+availability of the service
+correcteness of authentication process
+
+Supporting assets:
+hardware on client side
+cryptographic keys
+password
+
+
+
+Also we don’t want others to know our method of user authentication or else they could attempt to spoof user login
+
+
+
+What threats should be considered in case of my project?
+
+1. The threat is that someone can either steal the photos 
+2. steal account data - get access to restricted stuff or by hack attack
+3. they can crack our algorithms without having user photos. 
+	For example, they steal our Python code and calculate that passing a certain vector gets accepted as user login
+	and if they steal our encryption key for photos, they can decrypt photos
+4. Fake server taking the photos to steal our data  (phishing)
+5. Image of the face change over time to preserve honest level of the authentication the data base should be updated
+
+
+
+What controls should be implemented/deployed to mitigate the threats?
+
+To mitigate risk:
+
+1) don’t allow users to submit their own Photos. Photos only taken by our secure application 
+2) check photo is a photo of living person
+3) encrypt photos, vector of photos and change encryption key every few months,
+4) encrypt Python code,  files as well
+5) optionally , cross validate new photos using secondary algorithm e.g. use both eigen and fischer
+6) provide new photos every year to update data
+7) There should exist TLS channel between server and application
+
