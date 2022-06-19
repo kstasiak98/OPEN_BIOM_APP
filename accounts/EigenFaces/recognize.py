@@ -31,8 +31,8 @@ def predict(face_recognizer, img):
     for d in detected:
         if len(d) > 0:
             results.append(face_recognizer.predict(d[0]))
-            cv2.imshow(str(results[-1]), d[0])
-            cv2.waitKey(5000)
+            # cv2.imshow(str(results[-1]), d[0])
+            # cv2.waitKey(5000)
     
     return results
 
@@ -51,7 +51,7 @@ def predict_user(user_id, img):
 if __name__ == '__main__':
     # test_img = cv2.imread("test1.jpg")
     # print(predict_user(1, test_img))
-    test_img2 = cv2.imread("test3.jpg")
+    test_img2 = cv2.imread("test.jpg")
     print(predict_user(1, test_img2))
     # test_img3 = cv2.imread("test3.jpg")
     # print(predict_user(1, test_img3))

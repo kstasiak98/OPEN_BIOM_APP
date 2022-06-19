@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustomerImageForm, CreateUserForm, UserTestImageForm, ImageForm
+from .forms import CustomerImageForm, CreateUserForm, ImageFromTextForm, UserTestImageForm, ImageForm
 from .models import *
 
 # Create your views here.
@@ -10,11 +10,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.views.decorators.csrf import csrf_exempt
 
 from .decorators import unauthenticated_user, allowed_user, admin_only
 
 from accounts.EigenFaces.recognize import predict_user
 import cv2
+import numpy as np
+import base64
 
 #picture_admins
 
@@ -109,5 +112,25 @@ def userPage(request):
     return render(request, 'accounts/user.html', {'form': form})
 
 
+@unauthenticated_user
+def sendImage(request):
+    print(request.method)
+    if request.method == 'POST':
+        form = ImageFromTextForm(request.POST, request.FILES)
+        if form.is_valid():
+            src = form.cleaned_data.get("src")
+            user_id = form.cleaned_data.get("user_id")
+            img = data_uri_to_cv2_img(src)
+            # prediction = predict_user(user_id, img)
+            # if [i for i in prediction if i[1] < 100000]:
+            #     login_user_as(user_id)
+    else:
+        form = ImageFromTextForm()
+    return render(request, 'accounts/take_picture.html', {'form': form})
 
 
+def data_uri_to_cv2_img(uri):
+    encoded_data = uri.split(',')[1]
+    nparr = np.fromstring(base64.b64decode(encoded_data), np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    return img
