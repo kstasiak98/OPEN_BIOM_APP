@@ -26,3 +26,13 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+class ImageFromTextForm(forms.Form):
+    user_id = forms.CharField()
+    src = forms.CharField(widget=forms.HiddenInput())
+
+
+class UploadedImageForm(forms.Form):
+    user_id = forms.CharField()
+    src = forms.ImageField()
