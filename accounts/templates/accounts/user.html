@@ -10,7 +10,7 @@
     <div class="col-12">
         <form method = "POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="upload" accept="image/*">
+            {{ form.as_p }}
             <br>
             <button type="submit">Check</button>
         </form>

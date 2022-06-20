@@ -99,7 +99,7 @@ def userPage(request):
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             src = form.cleaned_data.get("image")
-            upload = request.FILES['upload']
+            # upload = request.FILES['upload']
             img = data_uri_to_cv2_img(src)
             #test_img = data_uri_to_cv2_img(upload)
             #check = predict_user(user_id_check, test_img)
