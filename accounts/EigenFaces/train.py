@@ -1,9 +1,10 @@
 import os
 import cv2
 import numpy as np
-from image_encrypt import encrypt, decrypt
+from accounts.EigenFaces.image_encrypt import encrypt, decrypt
 
 PATH = 'Images'
+PATH = 'uploads/Images'
 PASSWORD = 'Test'
 
 def detect_face(img):
@@ -56,6 +57,7 @@ def train_and_save(user_id):
     face_recognizer.train(resized, np.array(labels))
 
     vector_path = f'trained_data/u{user_id}.txt'
+    vector_path = f'uploads/trained_data/u{user_id}.txt'
     face_recognizer.write(vector_path)
     encrypt(vector_path, PASSWORD)
     os.remove(vector_path)

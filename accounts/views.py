@@ -21,6 +21,7 @@ import cv2
 import numpy as np
 import base64
 
+from accounts.EigenFaces.train import train_and_save
 #picture_admins
 
 @login_required(login_url='login')
@@ -91,21 +92,26 @@ def logoutUser(request):
 
 
 def userPage(request):
-    context = {}
+    groups_shown = request.user.groups.all()[0]
+    user_id_check = request.user.id
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            name = "TEST"
-            img_obj = form.cleaned_data.get("image")
-            print("Poszło")
-            print(img_obj)
-            test_img = cv2.imread("/uploads/test/test3.jpg")
-            print(predict_user(1, test_img))
-            return render(request, 'accounts/user.html', {'form': form, 'img_obj': img_obj})
+            src = form.cleaned_data.get("image")
+            upload = request.FILES['upload']
+            img = data_uri_to_cv2_img(src)
+            #test_img = data_uri_to_cv2_img(upload)
+            #check = predict_user(user_id_check, test_img)
+            prediction = predict_user(2, img)
+            print(prediction)
+            context = {'groups_shown': groups_shown,'check_if_true': prediction,'id': user_id_check,'upload': upload}
+            return render(request, 'accounts/user.html', context )
     else:
         form = ImageForm()
-    return render(request, 'accounts/user.html', {'form': form})
+
+    context = {'groups_shown': groups_shown, 'id': user_id_check, 'form': form}
+    return render(request, 'accounts/user.html', context)
 
 
 @login_required(login_url='login')
@@ -135,3 +141,12 @@ def data_uri_to_cv2_img(uri):
 def userList(request):
     if request.method == "GET":
         return render(request, 'accounts/userList.html')
+
+
+def trainData(request):
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        train_and_save(user_id)
+        context = {}
+        return render(request, 'accounts/train_data.html',context)
+    return render(request, 'accounts/train_data.html')

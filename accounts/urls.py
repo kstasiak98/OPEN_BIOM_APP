@@ -11,4 +11,5 @@ urlpatterns = [
     path('user/', views.userPage, name="user"),
     path('send-image/', views.sendImage, name="send-image"),
     path('userlist/', views.userList, name="userList"),
+    path('train_data/', views.trainData, name="train_data"),
 ]
