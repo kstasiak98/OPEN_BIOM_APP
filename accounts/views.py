@@ -40,12 +40,8 @@ def home(request):
         upload = request.FILES['upload']
         user_id = request.POST.get('user_id')
         fss = FileSystemStorage()
-        print('user id:', user_id)
-        print(fss)
         file = fss.save(f'Images/u{user_id}/{upload.name}', upload)
-        print('file:',file)
         file_url = fss.url(file)
-        print(file_url)
         return render(request, 'accounts/dashboard.html', {'file_url': file_url})
     return render(request,'accounts/dashboard.html')
 
