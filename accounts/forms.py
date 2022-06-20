@@ -31,3 +31,8 @@ class CreateUserForm(UserCreationForm):
 class ImageFromTextForm(forms.Form):
     user_id = forms.CharField()
     src = forms.CharField(widget=forms.HiddenInput())
+
+
+class UploadedImageForm(forms.Form):
+    user_id = forms.CharField()
+    src = forms.ImageField()

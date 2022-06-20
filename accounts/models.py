@@ -32,4 +32,12 @@ class Image_Test(models.Model):
         return "TEST"
 
 
+class UploadedImage(models.Model):
+    user_id = models.CharField(max_length=20)
+    src = models.ImageField(upload_to=f'test/u{user_id}/')
+
+    def __str__(self):
+        return "TEST"
+
+
 

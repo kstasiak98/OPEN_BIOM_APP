@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustomerImageForm, CreateUserForm, ImageFromTextForm, UserTestImageForm, ImageForm
+from .forms import CustomerImageForm, CreateUserForm, ImageFromTextForm, ImageForm, UploadedImageForm
 from .models import *
 
 # Create your views here.
@@ -13,6 +13,8 @@ from django.contrib.auth.models import Group
 from django.views.decorators.csrf import csrf_exempt
 
 from .decorators import unauthenticated_user, allowed_user, admin_only
+
+from django.core.files.storage import FileSystemStorage
 
 from accounts.EigenFaces.recognize import predict_user
 import cv2
@@ -34,20 +36,18 @@ def display_all_images(request):
 @admin_only
 def home(request):
     context = {}
-    if request.method == "POST":
-        form = CustomerImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            name = form.cleaned_data.get("name")
-            img = form.cleaned_data.get("image_field")
-            obj = CustomerImage.objects.create(
-                image_name=name,
-                image_field=img
-            )
-            obj.save()
-    else:
-        form = CustomerImageForm()
-    context['form'] = form
-    return render(request,'accounts/dashboard.html', context)
+    if request.method == "POST" and request.FILES['upload']:
+        upload = request.FILES['upload']
+        user_id = request.POST.get('user_id')
+        fss = FileSystemStorage()
+        print('user id:', user_id)
+        print(fss)
+        file = fss.save(f'Images/u{user_id}/{upload.name}', upload)
+        print('file:',file)
+        file_url = fss.url(file)
+        print(file_url)
+        return render(request, 'accounts/dashboard.html', {'file_url': file_url})
+    return render(request,'accounts/dashboard.html')
 
 
 @unauthenticated_user
@@ -112,7 +112,7 @@ def userPage(request):
     return render(request, 'accounts/user.html', {'form': form})
 
 
-@unauthenticated_user
+@login_required(login_url='login')
 def sendImage(request):
     print(request.method)
     if request.method == 'POST':
@@ -134,3 +134,8 @@ def data_uri_to_cv2_img(uri):
     nparr = np.fromstring(base64.b64decode(encoded_data), np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     return img
+
+
+def userList(request):
+    if request.method == "GET":
+        return render(request, 'accounts/userList.html')
